@@ -19,7 +19,7 @@ results_D2 = session.query(Measurement.tobs).filter(func.strftime("%m", Measurem
 ```  
 After converting to a list and then a DataFrame, I was then able to do "df.describe()" to see the statistics:  
 
-![June December Temps Side By Side](/June_December_Temps_Side_By_Side.png "June Temps")
+![June December Temps Side By Side](/June_December_Temps_Side_By_Side.png "June & December Temps")
   
 ### Three key differences
 * There is more historical data for June, but still a substantial amount for a side-by-side comparison    
@@ -30,4 +30,34 @@ After converting to a list and then a DataFrame, I was then able to do "df.descr
 ## Summary 
 It is clear that June is a warmer month, but it's still possible that this is a viable business idea.  December has some hot days so an appetite for ice cream and surfing may make still exist in the winter months.
 ### Additional Queries
-something, something, something
+Digging further, we can look at precipitation as guide to help us with our decision.  June shows us a total of precipitation level of 194.11 inches whereas December shows 304.63.  These results come from this code, which passes December and June into the query:  
+  
+```
+month = ['6','12']
+year = '2017'
+prcp_results = session.query(func.sum(Measurement.prcp)).\
+    filter(extract('year', Measurement.date) < year).\
+    filter(extract('month', Measurement.date).in_(month)).\
+    group_by(extract('month', Measurement.date)).all()
+prcp_results = [round(prcp, 2) for prcp in list(np.ravel(prcp_results))]
+prcp_results
+```  
+  
+The results are reduced to earlier than 2017 to make sure we're calculating statistics on an even number of summers and winters.  We did not have December 2017 data available.    
+    
+It's also useful to calculate statistics for all rainy days in both June and December.  
+  
+```
+# June Precipitation Statistics
+stats_June = session.query(Measurement.prcp).\
+    filter(extract('year', Measurement.date) < '2017').\
+    filter(extract('month', Measurement.date) == '6').\
+    filter(Measurement.prcp > 0.0)
+stats_June = [result[0] for result in stats_June]
+stats_June = pd.DataFrame(stats_June, columns=['June Precipitation Stats'])
+stats_June.describe()
+```  
+  
+The code above only returns days in June with precipitation greater than 0 (no rain).  If we run it for December as well, the side-by-side results look like this:  
+![June December Prcp Side By Side](/June_December_Prcp_Side_By_Side.png "June & December Prcp")  
+It is fairly clear that June is more desirable as it has less rainy days, a lower average, a lower total, and less variation overall.  This means that June is more predictable and thus most likely to generate higher sales.
