@@ -22,13 +22,13 @@ After converting to a list and then a DataFrame, I was then able to do "df.descr
 ![June December Temps Side By Side](/June_December_Temps_Side_By_Side.png "June & December Temps")
   
 ### Three key differences
-* There is more historical data for June evident by the counts, but still a substantial amount for a side-by-side comparison    
+* There is more historical data for June evident by the counts, but still a substantial amount of data for a side-by-side comparison    
 * June temperatures are higher for every statistical metric, but December is still very warm with a relatively low amount of deviation (only a std difference of 0.49)    
 * As we near the top percentiles, differences between December and June temperatures shrink  
   -Max June temperature is only 2 degrees higher than December  
     
 ## Summary 
-It is clear that June is a warmer month, but it's still possible that this is a viable, year-round business.  December has some hot days so an appetite for ice cream and surfing may make still exist in the winter months.
+It is clear that June is a warmer month, but it's still possible that this is a viable, year-round business.  December has some hot days so an appetite for ice cream and surfing may still exist in the winter months.
 ### Additional Queries
 Digging further, we can look at precipitation as a guide to help us with our decision.  June shows us a total precipitation level of 194.11 inches whereas December shows 304.63.  These results come from this code, which passes December and June into the query:  
   
